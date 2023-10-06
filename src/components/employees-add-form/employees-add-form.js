@@ -18,6 +18,15 @@ class EmployeesAddForm extends Component {
         })
     }
 
+    onSubmit = (e) => {
+        e.preventDefault();
+        this.props.onAdd(this.state.name, this.state.salary);
+        this.setState({
+            name: '',
+            salary: ''
+        })
+    }
+
     render(){
         const {name, salary} = this.state;
 
@@ -25,7 +34,9 @@ class EmployeesAddForm extends Component {
             <div className="app-add-form">
                 <h3>Добавьте нового сотрудника</h3>
                 <form
-                    className="add-form d-flex">
+                    className="add-form d-flex"
+                    onSubmit = {this.onSubmit}
+                    >
 
                     {/* в input запускается событие onChange, запускающее метод onValueChange(), в нем setState изменяет состояние
                     и записывает состояние в this.state.

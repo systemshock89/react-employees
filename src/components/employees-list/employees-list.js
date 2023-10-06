@@ -2,7 +2,7 @@ import EmployeesListItem from "../employees-list-item/employees-list-item";
 
 import './employees-list.css';
 
-const EmployeesList = ({data}) => {
+const EmployeesList = ({data, onDelete}) => {
 
     // переберем массив data и возвратим новый
     const elements = data.map((item, i) => {
@@ -14,7 +14,10 @@ const EmployeesList = ({data}) => {
 
         return (
             // упрощенный код, где развернем с помощью object spread operator
-            <EmployeesListItem key={id} {...itemProps}/>
+            <EmployeesListItem 
+                key={id} 
+                {...itemProps}
+                onDelete={() => onDelete(id)}/>
             
             // код, где непосредственно выводятся name, salary
             // <EmployeesListItem name={item.name} salary={item.salary}/>
