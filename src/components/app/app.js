@@ -21,6 +21,8 @@ class App extends Component{
         {name: 'John C.', salary: 800, increase: false, rise: true, id: 1},
         {name: 'Alex M.', salary: 3000, increase: true, rise: false, id: 2},
         {name: 'Carl W.', salary: 5000, increase: false, rise: false, id: 3},
+        // increase - премия
+        // rise - повышение
       ]
     }
     this.maxId = 4; // id для создания нового сотрудника, кот-й будем увеличивать на 1
@@ -70,7 +72,8 @@ class App extends Component{
     });
   }
 
-  onToggleIncrease = (id) => {
+  // менять рандомное в-во (премия, повышение)
+  onToggleProp = (id, prop) => {
     // //сложный способ:
     // this.setState(({data}) => {
     //   // const index = data.findIndex(elem => elem.id === id); // получим индекс эл-та, с кот-м будем работать
@@ -93,21 +96,20 @@ class App extends Component{
         data: data.map(item => {
           if(item.id === id) {
             // возвращаем новый объект
-            return {...item, increase: !item.increase}
+            return {...item, [prop]: !item[prop]}
           }
           return item;
         })
     }))
   }
 
-  onToggleRise = (id) => {
-    console.log(`rise this ${id}`)
-  }
-
   render(){
+    const employees = this.state.data.length; // кол-во сотрудников
+    const increased = this.state.data.filter(item => item.increase).length; // отфильтруем кол-во сотрудников с премией
+
     return (
       <div className="app">
-        <AppInfo></AppInfo>
+        <AppInfo employees={employees} increased={increased}></AppInfo>
   
         <div className="search-panel">
           <SearchPanel/>
@@ -117,8 +119,7 @@ class App extends Component{
         <EmployeesList 
           data={this.state.data}
           onDelete={this.deleteItem} // обозначили ф-ю onDelete и передали ниже в EmployeesList, а там получили и передали еще ниже в компонент EmployeesListItem, вызвав с id 
-          onToggleIncrease={this.onToggleIncrease}
-          onToggleRise={this.onToggleRise}/> 
+          onToggleProp={this.onToggleProp}/> 
   
         <EmployeesAddForm onAdd={this.addItem}/>
   

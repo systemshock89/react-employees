@@ -2,7 +2,7 @@ import EmployeesListItem from "../employees-list-item/employees-list-item";
 
 import './employees-list.css';
 
-const EmployeesList = ({data, onDelete, onToggleIncrease, onToggleRise}) => {
+const EmployeesList = ({data, onDelete, onToggleProp}) => {
 
     // переберем массив data и возвратим новый
     const elements = data.map((item, i) => {
@@ -18,8 +18,8 @@ const EmployeesList = ({data, onDelete, onToggleIncrease, onToggleRise}) => {
                 key={id} 
                 {...itemProps}
                 onDelete={() => onDelete(id)}
-                onToggleIncrease={() => onToggleIncrease(id)}
-                onToggleRise={() => onToggleRise(id)}/>
+                onToggleProp={(e) => onToggleProp(id, e.currentTarget.getAttribute('data-toggle'))}/> // получим data атрибут через объект события e
+                // currentTarget вместо target, чтобы предотвратить всплытие событий
             
             // код, где непосредственно выводятся name, salary
             // <EmployeesListItem name={item.name} salary={item.salary}/>
