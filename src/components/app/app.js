@@ -18,9 +18,9 @@ class App extends Component{
     this.state = {
       // данные "приходящие" с сервера
       data: [
-        {name: 'John C.', salary: 800, increase: false, id: 1},
-        {name: 'Alex M.', salary: 3000, increase: true, id: 2},
-        {name: 'Carl W.', salary: 5000, increase: false, id: 3},
+        {name: 'John C.', salary: 800, increase: false, rise: true, id: 1},
+        {name: 'Alex M.', salary: 3000, increase: true, rise: false, id: 2},
+        {name: 'Carl W.', salary: 5000, increase: false, rise: false, id: 3},
       ]
     }
     this.maxId = 4; // id для создания нового сотрудника, кот-й будем увеличивать на 1
@@ -58,6 +58,7 @@ class App extends Component{
       name,
       salary,
       increase: false,
+      rise: false,
       id: this.maxId++
     }
 
@@ -67,6 +68,40 @@ class App extends Component{
         data: newArr
       }
     });
+  }
+
+  onToggleIncrease = (id) => {
+    // //сложный способ:
+    // this.setState(({data}) => {
+    //   // const index = data.findIndex(elem => elem.id === id); // получим индекс эл-та, с кот-м будем работать
+
+    //   // const old = data[index];
+
+    //   // // в новом объекте развернули старый объект и св-во increase меняем на противоположное
+    //   // const newItem = {...old, increase: !old.increase};
+
+    //   // // 1 часть - before, потом новый эл-т, потом оставшуюся часть массива
+    //   // const newArr = [...data.slice(0, index), newItem, ...data.slice(index + 1)];
+
+    //   // return {
+    //   //   data: newArr
+    //   // }      
+    // })
+
+    // способ с .map() - короче 
+    this.setState(({data}) => ({ // сразу возвратим объект, поэтому обернем все в ()
+        data: data.map(item => {
+          if(item.id === id) {
+            // возвращаем новый объект
+            return {...item, increase: !item.increase}
+          }
+          return item;
+        })
+    }))
+  }
+
+  onToggleRise = (id) => {
+    console.log(`rise this ${id}`)
   }
 
   render(){
@@ -81,7 +116,9 @@ class App extends Component{
   
         <EmployeesList 
           data={this.state.data}
-          onDelete={this.deleteItem}/> {/* обозначили ф-ю onDelete и передали ниже в EmployeesList, а там получили и передали еще ниже в компонент EmployeesListItem, вызвав с id */}
+          onDelete={this.deleteItem} // обозначили ф-ю onDelete и передали ниже в EmployeesList, а там получили и передали еще ниже в компонент EmployeesListItem, вызвав с id 
+          onToggleIncrease={this.onToggleIncrease}
+          onToggleRise={this.onToggleRise}/> 
   
         <EmployeesAddForm onAdd={this.addItem}/>
   

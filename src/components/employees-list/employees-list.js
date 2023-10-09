@@ -2,7 +2,7 @@ import EmployeesListItem from "../employees-list-item/employees-list-item";
 
 import './employees-list.css';
 
-const EmployeesList = ({data, onDelete}) => {
+const EmployeesList = ({data, onDelete, onToggleIncrease, onToggleRise}) => {
 
     // переберем массив data и возвратим новый
     const elements = data.map((item, i) => {
@@ -17,7 +17,9 @@ const EmployeesList = ({data, onDelete}) => {
             <EmployeesListItem 
                 key={id} 
                 {...itemProps}
-                onDelete={() => onDelete(id)}/>
+                onDelete={() => onDelete(id)}
+                onToggleIncrease={() => onToggleIncrease(id)}
+                onToggleRise={() => onToggleRise(id)}/>
             
             // код, где непосредственно выводятся name, salary
             // <EmployeesListItem name={item.name} salary={item.salary}/>
