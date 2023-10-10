@@ -23,7 +23,8 @@ class App extends Component{
         {name: 'Carl W.', salary: 5000, increase: false, rise: false, id: 3},
         // increase - премия
         // rise - повышение
-      ]
+      ],
+      term: '' // строка, по кот-й фильтруем сотрудников
     }
     this.maxId = 4; // id для создания нового сотрудника, кот-й будем увеличивать на 1
   }
@@ -103,21 +104,43 @@ class App extends Component{
     }))
   }
 
+  // поиск
+  searchEmp = (items, term) => {
+    if(term.length === 0){
+      return items; // если в поле поиска ничего не введено, то не фильтруем, а возвращаем тот массив, кот-й пришел
+    } 
+
+    return items.filter(item => {
+      // возвратим только те эл-ты, кот-е пройдут проверку: если в поле name у эл-та присутствует кусочек строки term
+      // если indexOf ничего не находит, то возвращает -1
+      // если найдено, то возвращается индекс, где была найдена подстрока
+      return item.name.indexOf(term) > -1  
+    })
+
+  }
+
+  // обновление поиска
+  onUpdateSearch = (term) => {
+    this.setState({term}); // сокращенная запись this.setState({term: term})
+  }
+
   render(){
+    const {data, term} = this.state;
     const employees = this.state.data.length; // кол-во сотрудников
     const increased = this.state.data.filter(item => item.increase).length; // отфильтруем кол-во сотрудников с премией
+    const visibleData = this.searchEmp(data, term); // отсортированные сотрудники (кот-е будут видимы)
 
     return (
       <div className="app">
         <AppInfo employees={employees} increased={increased}></AppInfo>
   
         <div className="search-panel">
-          <SearchPanel/>
+          <SearchPanel onUpdateSearch={this.onUpdateSearch}/>
           <AppFilter/>
         </div>
   
         <EmployeesList 
-          data={this.state.data}
+          data={visibleData}
           onDelete={this.deleteItem} // обозначили ф-ю onDelete и передали ниже в EmployeesList, а там получили и передали еще ниже в компонент EmployeesListItem, вызвав с id 
           onToggleProp={this.onToggleProp}/> 
   
