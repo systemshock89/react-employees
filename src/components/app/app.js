@@ -24,7 +24,8 @@ class App extends Component{
         // increase - премия
         // rise - повышение
       ],
-      term: '' // строка, по кот-й фильтруем сотрудников
+      term: '', // строка, по кот-й фильтруем сотрудников
+      filter: 'all' // фильтр
     }
     this.maxId = 4; // id для создания нового сотрудника, кот-й будем увеличивать на 1
   }
@@ -124,11 +125,34 @@ class App extends Component{
     this.setState({term}); // сокращенная запись this.setState({term: term})
   }
 
+  // фильтр
+  filterPost = (items, filter) => {
+    switch (filter){
+      // на повышение
+      case 'rise':
+        return items.filter(item => item.rise);
+        // break в react можно не ставить
+
+      // зп выше 1000
+      case 'moreThen1000':
+        return items.filter(item => item.salary > 1000);
+      
+      // все сотрудники
+      default:
+        return items;
+
+    }
+  }
+
+  onFilterSelect = (filter) => {
+    this.setState({filter});
+  }
+
   render(){
-    const {data, term} = this.state;
+    const {data, term, filter} = this.state;
     const employees = this.state.data.length; // кол-во сотрудников
     const increased = this.state.data.filter(item => item.increase).length; // отфильтруем кол-во сотрудников с премией
-    const visibleData = this.searchEmp(data, term); // отсортированные сотрудники (кот-е будут видимы)
+    const visibleData = this.filterPost(this.searchEmp(data, term), filter); // отсортированные, а также отфильтрованные сотрудники (кот-е будут видимы) (двойная фильтрация)
 
     return (
       <div className="app">
@@ -136,7 +160,7 @@ class App extends Component{
   
         <div className="search-panel">
           <SearchPanel onUpdateSearch={this.onUpdateSearch}/>
-          <AppFilter/>
+          <AppFilter filter={filter} onFilterSelect={this.onFilterSelect}/>
         </div>
   
         <EmployeesList 
