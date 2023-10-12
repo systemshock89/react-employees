@@ -4,12 +4,20 @@ import { Component } from 'react';
 import './employees-add-form.scss';
 
 class EmployeesAddForm extends Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            name: '',
-            salary: ''
-        }
+ 
+    // constructor(props){
+    //     super(props);
+    //     this.state = {
+    //         name: '',
+    //         salary: ''
+    //     }
+    // }
+
+    // создание св-в без конструктора (фича 2022)
+    // (как-будто переменная, но без указания let, const)
+    state = {
+        name: '',
+        salary: ''
     }
 
     // при вводе текста в input меняем его значение
@@ -30,6 +38,14 @@ class EmployeesAddForm extends Component {
             salary: ''
         })
     }
+
+    // статичный метод (static)
+    static onLog = () => {
+        console.log('Hey')
+    }
+
+    // статическая пер-я
+    static logged = 'on';
 
     render(){
         const {name, salary} = this.state;
@@ -69,5 +85,8 @@ class EmployeesAddForm extends Component {
         )
     }
 }
+
+EmployeesAddForm.onLog();
+console.log(EmployeesAddForm.logged);
 
 export default EmployeesAddForm;
