@@ -1,5 +1,7 @@
 .app {
     margin: 0 auto;
     max-width: 1000px;
+    padding-left: 15px;
+    padding-right: 15px;
   }
   
